@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ShopVerse VR – Walk-in Demo Store</title>
+<style>
+:root{--bg:#ede9f8;--panel:#fff;--tx:#1b1035;--tx2:#6e6584;--line:#e3def2;--cy:#00d9ff;--pk:#ff3d81;--chip:#f4f1fa;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1035;--panel:#241640;--tx:#f3f0fb;--tx2:#b9aedd;--line:#3a2a63;--chip:#2e1f52}}
+:root[data-theme="dark"]{--bg:#1b1035;--panel:#241640;--tx:#f3f0fb;--tx2:#b9aedd;--line:#3a2a63;--chip:#2e1f52}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;overflow:hidden}
+body{background:var(--bg);font-family:Calibri,Arial,sans-serif;color:var(--tx)}
+#stage{position:fixed;inset:0;touch-action:none}
+#stage canvas{display:block;width:100%;height:100%}
+.bar{position:fixed;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 10px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.brand{font-family:Cambria,serif;font-weight:700;font-size:20px;color:#fff;text-shadow:0 1px 6px #0008}
+.btn{pointer-events:auto;border:0;border-radius:22px;padding:10px 16px;font:600 14px Calibri,Arial,sans-serif;cursor:pointer;background:var(--pk);color:#fff}
+.btn.alt{background:var(--chip);color:var(--tx)}
+.btn:focus-visible,select:focus-visible{outline:3px solid var(--cy);outline-offset:2px}
+.hint{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);text-align:center;color:#d9d3ee;font-size:13px;pointer-events:none;text-shadow:0 1px 4px #000a}
+.pad{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 46px);display:flex;flex-direction:column;gap:8px}
+.pad button{width:52px;height:52px;border-radius:50%;border:0;background:#ffffff26;color:#fff;font-size:20px;backdrop-filter:blur(4px)}
+#tag{position:fixed;pointer-events:none;background:#000c;color:#fff;padding:5px 10px;border-radius:8px;font-size:13px;display:none;transform:translate(12px,12px)}
+.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.card{background:var(--panel);color:var(--tx);border-radius:16px;width:min(420px,100%);max-height:88%;overflow:auto;padding:22px}
+.card h2{font-family:Cambria,serif;margin:0 0 4px;font-size:24px}
+.big{font-size:64px;text-align:center;margin:4px 0}
+.price{color:var(--pk);font-weight:700;font-size:20px}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+td{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+td:first-child{color:var(--tx2);width:42%}
+.ok{color:#12a36b;font-weight:700}.warn{color:#e08a00;font-weight:700}
+.row{display:flex;gap:10px;margin-top:14px}.row .btn{flex:1}
+.item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--chip);color:var(--tx);font-size:14px;margin:6px 0 4px}
+.eta{font:700 44px Cambria,serif;text-align:center;color:var(--pk)}
+.steps{display:flex;justify-content:space-between;font-size:12px;color:var(--tx2);margin-top:10px}
+.steps b{color:var(--tx)}
+.bar2{height:8px;background:var(--chip);border-radius:6px;overflow:hidden;margin-top:8px}
+.bar2 i{display:block;height:100%;width:0;background:var(--cy);transition:width .4s}
+.note{color:var(--tx2);font-size:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div class="bar"><div class="brand">ShopVerse VR</div><button class="btn" id="cartBtn">Cart (0)</button></div>
+<div id="tag"></div>
+<div class="hint">Drag to look around · W A S D or arrow keys to walk · Click a product to inspect it</div>
+<div class="pad"><button id="fw" aria-label="Walk forward">▲</button><button id="bk" aria-label="Walk back">▼</button></div>
+<div class="modal" id="mProd"><div class="card" id="cProd"></div></div>
+<div class="modal" id="mCart"><div class="card" id="cCart"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const T=THREE;
+const DEPTS=[
+ {n:'Dairy & Bakery',c:0x00d9ff,i:[['🥛','Toned Milk 1L',68,1,4,'Green Valley Dairy'],['🧀','Cheese Slices',120,20,180,'Alpine Foods'],['🍞','Multigrain Bread',55,1,4,'Daily Bakes']]},
+ {n:'Snacks',c:0xff3d81,i:[['🍪','Oat Cookies',40,30,150,'Crunchwell'],['🍫','Dark Chocolate',150,60,300,'Cocoa Craft'],['🥜','Roasted Peanuts',90,45,180,'NutHouse']]},
+ {n:'Beverages',c:0xffc233,i:[['🧃','Mango Juice',35,15,165,'Fruitopia'],['☕','Cold Coffee',60,10,110,'Brew & Co'],['🥤','Lemon Soda',25,20,340,'FizzUp']]},
+ {n:'Personal Care',c:0x7c5cff,i:[['🧴','Herbal Shampoo',210,90,640,'PureLeaf'],['🪥','Bamboo Toothbrush',60,40,700,'EcoSmile'],['🧼','Neem Soap',45,50,680,'NeemNest']]},
+ {n:'Fresh Produce',c:0x2ed47a,i:[['🍎','Apples 1kg',180,2,10,'Hill Orchards'],['🍌','Bananas 1 dozen',60,1,5,'Sunfarm'],['🥕','Carrots 500g',50,1,8,'Green Roots']]}
+];
+const fmt=d=>d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+const now=Date.now(),DAY=864e5;
+let seed=7;const batch=()=>'B'+(seed=(seed*37+11)%9000+1000);
+
+const stage=document.getElementById('stage');
+const scene=new T.Scene();scene.background=new T.Color(0x1b1035);scene.fog=new T.Fog(0x1b1035,10,30);
+const cam=new T.PerspectiveCamera(70,innerWidth/innerHeight,.1,100);cam.position.set(0,1.6,0);cam.rotation.order='YXZ';
+const ren=new T.WebGLRenderer({antialias:true});ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setSize(innerWidth,innerHeight);stage.appendChild(ren.domElement);
+scene.add(new T.AmbientLight(0xffffff,.75));
+const pl=new T.PointLight(0xffffff,.8,30);pl.position.set(0,5,0);scene.add(pl);
+const floor=new T.Mesh(new T.PlaneGeometry(40,40),new T.MeshStandardMaterial({color:0x2a1b54}));floor.rotation.x=-Math.PI/2;scene.add(floor);
+const grid=new T.GridHelper(40,40,0x00d9ff,0x3a2a63);grid.position.y=.01;scene.add(grid);
+
+function emojiTex(e,col){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');
+ x.fillStyle='#'+col.toString(16).padStart(6,'0');x.globalAlpha=.25;x.fillRect(0,0,128,128);x.globalAlpha=1;
+ x.font='78px serif';x.textAlign='center';x.textBaseline='middle';x.fillText(e,64,70);return new T.CanvasTexture(c)}
+function signTex(t,col){const c=document.createElement('canvas');c.width=512;c.height=128;const x=c.getContext('2d');
+ x.fillStyle='#'+col.toString(16).padStart(6,'0');x.fillRect(0,0,512,128);x.fillStyle='#1b1035';
+ x.font='bold 56px Cambria,serif';x.textAlign='center';x.textBaseline='middle';x.fillText(t,256,68);return new T.CanvasTexture(c)}
+
+const products=[],stands=[];
+DEPTS.forEach((d,k)=>{
+ const a=k*Math.PI*2/DEPTS.length,R=7.5,g=new T.Group();
+ g.position.set(Math.sin(a)*R,0,-Math.cos(a)*R);g.lookAt(0,0,0);scene.add(g);stands.push(g.position);
+ const tb=new T.Mesh(new T.BoxGeometry(3.6,.9,1.1),new T.MeshStandardMaterial({color:0xf3f0fb}));tb.position.y=.45;g.add(tb);
+ const bk=new T.Mesh(new T.BoxGeometry(3.8,2.4,.1),new T.MeshStandardMaterial({color:d.c,transparent:true,opacity:.35}));bk.position.set(0,1.6,-.6);g.add(bk);
+ const sg=new T.Mesh(new T.PlaneGeometry(3.2,.8),new T.MeshBasicMaterial({map:signTex(d.n,d.c)}));sg.position.set(0,3.2,-.5);g.add(sg);
+ d.i.forEach((p,j)=>{
+  const m=new T.Mesh(new T.BoxGeometry(.7,.7,.7),new T.MeshStandardMaterial({map:emojiTex(p[0],d.c)}));
+  m.position.set((j-1)*1.15,1.3,0);g.add(m);
+  m.userData={e:p[0],name:p[1],price:p[2],mfg:new Date(now-p[3]*DAY),exp:new Date(now+(p[4]-p[3])*DAY),left:p[4]-p[3],by:p[5],dept:d.n,batch:batch()};
+  products.push(m)})
+});
+
+let yaw=0,pitch=0,keys={},drag=null,hover=null;
+addEventListener('keydown',e=>keys[e.key.toLowerCase()]=1);addEventListener('keyup',e=>keys[e.key.toLowerCase()]=0);
+const hold=(id,k)=>{const b=document.getElementById(id);['pointerdown'].forEach(v=>b.addEventListener(v,e=>{e.stopPropagation();keys[k]=1}));['pointerup','pointerleave','pointercancel'].forEach(v=>b.addEventListener(v,()=>keys[k]=0))};
+hold('fw','w');hold('bk','s');
+const cv=ren.domElement,ray=new T.Raycaster(),mv=new T.Vector2();
+function pick(x,y){mv.set(x/innerWidth*2-1,-(y/innerHeight)*2+1);ray.setFromCamera(mv,cam);const h=ray.intersectObjects(products);return h.length?h[0].object:null}
+cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,m:0}});
+addEventListener('pointermove',e=>{
+ if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.m+=Math.abs(dx)+Math.abs(dy);yaw-=dx*.005;pitch=Math.max(-1.1,Math.min(1.1,pitch-dy*.004));drag.x=e.clientX;drag.y=e.clientY}
+ else if(e.target===cv){hover=pick(e.clientX,e.clientY);const t=document.getElementById('tag');
+  if(hover){t.style.display='block';t.textContent=hover.userData.e+' '+hover.userData.name+' · ₹'+hover.userData.price;t.style.left=e.clientX+'px';t.style.top=e.clientY+'px';cv.style.cursor='pointer'}else{t.style.display='none';cv.style.cursor='grab'}}});
+addEventListener('pointerup',e=>{if(drag&&drag.m<8){const p=pick(e.clientX,e.clientY);if(p)openProd(p.userData)}drag=null});
+addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();ren.setSize(innerWidth,innerHeight)});
+
+const clock=new T.Clock();
+(function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05),sp=3.2*dt;
+ const f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0),s=(keys.d?1:0)-(keys.a?1:0);
+ if(keys.arrowleft)yaw+=1.8*dt;if(keys.arrowright)yaw-=1.8*dt;
+ cam.position.x+=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*sp;cam.position.z+=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*sp;
+ const r=Math.hypot(cam.position.x,cam.position.z);if(r>11){cam.position.x*=11/r;cam.position.z*=11/r}
+ stands.forEach(p=>{const dx=cam.position.x-p.x,dz=cam.position.z-p.z,d=Math.hypot(dx,dz);if(d<2.1){cam.position.x=p.x+dx/d*2.1;cam.position.z=p.z+dz/d*2.1}});
+ cam.rotation.set(pitch,yaw,0);products.forEach((m,i)=>m.rotation.y+=dt*(hover===m?0:.6));
+ ren.render(scene,cam)})();
+
+// ---- shop UI ----
+const cart={};
+const $=id=>document.getElementById(id);
+const rupee=n=>'₹'+n;
+function updCart(){const n=Object.values(cart).reduce((a,b)=>a+b.q,0);$('cartBtn').textContent='Cart ('+n+')'}
+function openProd(p){
+ const ok=p.left>7;
+ $('cProd').innerHTML=`<div class="big">${p.e}</div><h2>${p.name}</h2><div class="price">${rupee(p.price)}</div>
+ <table><tr><td>Department</td><td>${p.dept}</td></tr><tr><td>Manufactured</td><td>${fmt(p.mfg)}</td></tr>
+ <tr><td>Expiry / best before</td><td>${fmt(p.exp)} <span class="${ok?'ok':'warn'}">(${p.left} days left)</span></td></tr>
+ <tr><td>Manufacturer</td><td>${p.by}</td></tr><tr><td>Batch no.</td><td>${p.batch}</td></tr></table>
+ <div class="row"><button class="btn alt" id="pc">Keep browsing</button><button class="btn" id="pa">Add to cart</button></div>`;
+ $('mProd').classList.add('on');
+ $('pc').onclick=()=>$('mProd').classList.remove('on');
+ $('pa').onclick=()=>{(cart[p.name]=cart[p.name]||{p,q:0}).q++;updCart();$('mProd').classList.remove('on')};
+}
+$('mProd').onclick=e=>{if(e.target.id==='mProd')e.currentTarget.classList.remove('on')};
+$('mCart').onclick=e=>{if(e.target.id==='mCart')e.currentTarget.classList.remove('on')};
+let timer=null;
+$('cartBtn').onclick=()=>{
+ const L=Object.values(cart);
+ if(!L.length){$('cCart').innerHTML=`<h2>Your cart is empty</h2><p class="note">Walk up to any department and click a product to inspect it and add it here.</p><div class="row"><button class="btn" id="cx">Back to store</button></div>`;
+  $('mCart').classList.add('on');$('cx').onclick=()=>$('mCart').classList.remove('on');return}
+ const tot=L.reduce((a,b)=>a+b.p.price*b.q,0);
+ $('cCart').innerHTML=`<h2>Your cart</h2>${L.map(x=>`<div class="item"><span>${x.p.e} ${x.p.name} × ${x.q}</span><b>${rupee(x.p.price*x.q)}</b></div>`).join('')}
+ <div class="item"><b>Total</b><b class="price">${rupee(tot)}</b></div>
+ <label class="note" for="zone">Delivery area</label>
+ <select id="zone"><option>Zone 1 – Central hub (2 km)</option><option>Zone 2 – North hub (3 km)</option><option>Zone 3 – East hub (4 km)</option></select>
+ <div class="note">Every zone is served by a nearby micro-hub for 30-minute handover.</div>
+ <div class="row"><button class="btn alt" id="cx">Keep shopping</button><button class="btn" id="po">Place order</button></div>`;
+ $('mCart').classList.add('on');
+ $('cx').onclick=()=>$('mCart').classList.remove('on');
+ $('po').onclick=()=>{
+  const z=$('zone').value.split(' – ')[0];let m=30;
+  $('cCart').innerHTML=`<h2>Order confirmed</h2><div class="note">${z} · ${rupee(tot)} · demo speed: 1 second = 1 minute</div>
+  <div class="eta" id="eta">30:00</div><div class="bar2"><i id="pr"></i></div>
+  <div class="steps"><span id="s1"><b>Packed</b></span><span id="s2">Rider on the way</span><span id="s3">Delivered</span></div>
+  <div class="row"><button class="btn" id="dn">Done</button></div>`;
+  for(const k in cart)delete cart[k];updCart();
+  clearInterval(timer);
+  timer=setInterval(()=>{m--;$('eta').textContent=String(Math.max(m,0)).padStart(2,'0')+':00';$('pr').style.width=(30-m)/30*100+'%';
+   $('s1').innerHTML='<b>Packed</b>';if(m<=22)$('s2').innerHTML='<b>Rider on the way</b>';if(m<=0){$('s3').innerHTML='<b>Delivered</b>';$('eta').textContent='Delivered!';clearInterval(timer)}},1000);
+  $('dn').onclick=()=>{clearInterval(timer);$('mCart').classList.remove('on')};
+ };
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ShopVerse VR – Walk in. Read every label. Get it in 30 minutes.</title>
+<style>
+:root{color-scheme:dark;--bg:#15121d;--s1:#1e1a2a;--s2:#272236;--line:#342e47;--tx:#ebe7f3;--tx2:#a29bb7;--teal:#5fa8a1;--rose:#5f8fc4;--amber:#d2a45c;--plum:#6b5b95;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 Calibri,Arial,sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:Cambria,Georgia,serif;line-height:1.15;margin:0}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+section{padding:84px 0}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:#15121df0;border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font:700 21px Cambria,serif}.logo span{color:var(--teal)}
+.links{display:flex;gap:26px;align-items:center;font-size:15px;color:var(--tx2)}
+.links a:hover{color:var(--tx)}
+.btn{display:inline-block;border:0;border-radius:999px;padding:12px 26px;font:600 15px Calibri,Arial,sans-serif;cursor:pointer;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.p{background:var(--rose);color:#1a1220}.btn.p:hover{background:#77a3d4}
+.btn.g{background:transparent;border:1px solid var(--line);color:var(--tx)}.btn.g:hover{background:var(--s1)}
+.btn:focus-visible,a:focus-visible,.tab:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.hero{padding:96px 0 84px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(46px,7vw,84px);letter-spacing:-1px}
+.hero h1 span{color:var(--teal)}
+.host{margin:18px 0 6px;color:var(--amber);font-size:17px}
+.lead{color:var(--tx2);font-size:19px;max-width:520px;margin:12px 0 30px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.float{position:relative;height:400px}
+.tile{position:absolute;width:112px;height:112px;border-radius:26px;display:flex;align-items:center;justify-content:center;font-size:56px;border:1px solid var(--line);box-shadow:0 18px 40px #0006;animation:fl 6s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-16px) rotate(3deg)}}
+.strip{background:var(--s1);border-block:1px solid var(--line);padding:30px 0}
+.strip .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+.strip b{font:700 30px Cambria,serif;color:var(--amber);display:block}
+.strip span{color:var(--tx2);font-size:14px}
+.head{max-width:620px;margin-bottom:44px}
+.head h2{font-size:clamp(30px,4vw,42px)}
+.head p{color:var(--tx2);margin:12px 0 0}
+.grid{display:grid;gap:20px}
+.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .25s,border-color .25s,background .25s}
+.card:hover{transform:translateY(-6px);border-color:var(--teal);background:var(--s2)}
+.card h3{font-size:19px;margin:12px 0 8px}.card p{margin:0;color:var(--tx2);font-size:15px}
+.ic{width:48px;height:48px;border-radius:14px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:24px}
+.step .n{font:700 15px Cambria,serif;color:var(--teal)}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.tab{border:1px solid var(--line);background:transparent;color:var(--tx2);padding:9px 18px;border-radius:999px;font:600 14px Calibri,Arial,sans-serif;cursor:pointer;transition:.2s}
+.tab:hover{color:var(--tx)}.tab.on{background:var(--teal);border-color:var(--teal);color:#12201f}
+.prod{text-align:center;padding:30px 22px}
+.prod .em{font-size:76px;line-height:1;display:inline-block;transition:transform .3s}
+.prod:hover .em{transform:scale(1.18) rotate(-6deg)}
+.prod h3{margin:14px 0 4px}.price{color:var(--rose);font-weight:700;font-size:18px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.chip{background:var(--s2);border-radius:999px;padding:4px 12px;font-size:12.5px;color:var(--tx2)}
+.host-box{display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:center;background:var(--s1);border:1px solid var(--line);border-radius:24px;padding:38px}
+.av{width:120px;height:120px;border-radius:50%;background:var(--plum);display:flex;align-items:center;justify-content:center;font-size:58px}
+.host-box h2{font-size:30px}.host-box p{color:var(--tx2);margin:10px 0 0;max-width:600px}
+.final{text-align:center;background:var(--s1);border-top:1px solid var(--line)}
+.final h2{font-size:clamp(30px,4.5vw,46px);margin-bottom:14px}.final p{color:var(--tx2);max-width:520px;margin:0 auto 30px}
+footer{padding:28px 0;color:var(--tx2);font-size:14px;text-align:center;border-top:1px solid var(--line)}
+#rb{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;width:54px;height:34px;will-change:transform}
+#rb svg{width:100%;height:100%;overflow:visible}
+#rb .fa{opacity:0}#rb .fb{opacity:1}
+#rb.run .fa{animation:fa var(--d,.24s) steps(1) infinite}
+#rb.run .fb{animation:fb var(--d,.24s) steps(1) infinite}
+@keyframes fa{0%{opacity:1}50%{opacity:0}}
+@keyframes fb{0%{opacity:0}50%{opacity:1}}
+#ov{position:fixed;inset:0;z-index:9000;background:#15121df7;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+#ov.on{display:flex}
+#ov h2{font-size:clamp(28px,5vw,44px);margin:26px 0 10px}
+#ov p{color:var(--tx2);margin:0}
+.ring{width:64px;height:64px;border-radius:50%;border:5px solid var(--s2);border-top-color:var(--teal);animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.pb{width:min(320px,80%);height:6px;background:var(--s2);border-radius:6px;margin-top:26px;overflow:hidden}
+.pb i{display:block;height:100%;width:0;background:var(--amber);transition:width 3s linear}
+.pb.go i{width:100%}
+#manual{margin-top:20px;color:var(--teal);display:none;text-decoration:underline}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.float{height:280px}.g4,.g3{grid-template-columns:repeat(2,1fr)}.strip .wrap{grid-template-columns:repeat(2,1fr)}.links a:not(.btn){display:none}.host-box{grid-template-columns:1fr;text-align:center;justify-items:center}}
+@media(max-width:540px){.g4,.g3,.g2{grid-template-columns:1fr}section{padding:60px 0}}
+@media(prefers-reduced-motion:reduce){.tile{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="rb" aria-hidden="true"><svg viewBox="0 0 80 50">
+<defs>
+<radialGradient id="fur" cx=".5" cy=".45" r=".65"><stop offset="0" stop-color="#f6f3ec"/><stop offset="1" stop-color="#c9c2b3"/></radialGradient>
+<radialGradient id="hd" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#faf8f3"/><stop offset="1" stop-color="#cfc8ba"/></radialGradient>
+<filter id="bl"><feGaussianBlur stdDeviation="2"/></filter>
+</defs>
+<ellipse cx="37" cy="29" rx="30" ry="15" fill="#000" opacity=".3" filter="url(#bl)"/>
+<g class="fb" stroke="#d8d1c3" stroke-width="5" stroke-linecap="round" fill="none"><path d="M20 12 L28 6"/><path d="M20 38 L28 44"/><path d="M50 15 L47 8"/><path d="M50 35 L47 42"/></g>
+<g class="fb" fill="#efeadf"><ellipse cx="29" cy="5.5" rx="4" ry="2.4"/><ellipse cx="29" cy="44.5" rx="4" ry="2.4"/></g>
+<g class="fa" stroke="#d8d1c3" stroke-width="5" stroke-linecap="round" fill="none"><path d="M20 12 L6 5"/><path d="M20 38 L6 45"/><path d="M50 15 L62 9"/><path d="M50 35 L62 41"/></g>
+<g class="fa" fill="#efeadf"><ellipse cx="6" cy="4.5" rx="4.2" ry="2.4"/><ellipse cx="6" cy="45.5" rx="4.2" ry="2.4"/></g>
+<g fill="#fbf9f5" stroke="#d9d2c4" stroke-width=".6"><circle cx="9" cy="25" r="6.2"/><circle cx="6.5" cy="22" r="3.6"/><circle cx="6.5" cy="28" r="3.6"/><circle cx="11" cy="25" r="3.2" stroke="none"/></g>
+<ellipse cx="33" cy="25" rx="21" ry="14.5" fill="url(#fur)"/>
+<ellipse cx="21" cy="14" rx="8.5" ry="6" fill="#e6e1d5" opacity=".9"/><ellipse cx="21" cy="36" rx="8.5" ry="6" fill="#e6e1d5" opacity=".9"/>
+<ellipse cx="33" cy="25" rx="11" ry="6.5" fill="#a89f8e" opacity=".35"/>
+<g stroke="#9c937f" stroke-width=".6" opacity=".4" stroke-linecap="round"><path d="M16 20l4 1M22 17l3 2M29 16l3 2M16 30l4-1M22 33l3-2M29 34l3-2M38 21l3 1M38 29l3-1"/></g>
+<ellipse cx="38.5" cy="11" rx="14" ry="4.2" transform="rotate(26 38.5 11)" fill="#bdb5a7" stroke="#a39b8c" stroke-width=".5"/><ellipse cx="39.5" cy="11.4" rx="10.5" ry="2.1" transform="rotate(26 39.5 11.4)" fill="#e6c3bb"/><ellipse cx="27.5" cy="5.9" rx="3.8" ry="2.3" transform="rotate(26 27.5 5.9)" fill="#5e564d"/>
+<ellipse cx="38.5" cy="39" rx="14" ry="4.2" transform="rotate(-26 38.5 39)" fill="#bdb5a7" stroke="#a39b8c" stroke-width=".5"/><ellipse cx="39.5" cy="38.6" rx="10.5" ry="2.1" transform="rotate(-26 39.5 38.6)" fill="#e6c3bb"/><ellipse cx="27.5" cy="44.1" rx="3.8" ry="2.3" transform="rotate(-26 27.5 44.1)" fill="#5e564d"/>
+<ellipse cx="54" cy="25" rx="10.5" ry="8.6" fill="url(#hd)"/>
+<ellipse cx="61.5" cy="25" rx="5.2" ry="4.3" fill="#f3efe6"/>
+<circle cx="56.5" cy="19.2" r="1.9" fill="#1a1410"/><circle cx="57.1" cy="18.6" r=".6" fill="#fff"/>
+<circle cx="56.5" cy="30.8" r="1.9" fill="#1a1410"/><circle cx="57.1" cy="30.2" r=".6" fill="#fff"/>
+<ellipse cx="66" cy="25" rx="1.5" ry="1.2" fill="#c98f86"/>
+<g stroke="#8d8577" stroke-width=".5" opacity=".8" fill="none"><path d="M64 23.5L70 20.5M64 25L71 25M64 26.5L70 29.5"/></g>
+</svg></div>
+
+<nav><div class="wrap">
+ <a class="logo" href="#top">Shop<span>Verse</span> VR</a>
+ <div class="links"><a href="#how">How it works</a><a href="#items">Items</a><a href="#why">Why us</a><a href="#impact">Impact</a><a href="#host">Host</a><a class="btn p launch" href="#">Launch demo</a></div>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+ <div>
+  <h1>ShopVerse <span>VR</span></h1>
+  <div class="host">Hosted by Saksham Raghav</div>
+  <p class="lead">Step into a virtual shopping complex, pick up any product, read its label, expiry and manufacturing details, and get your order handed over in 30 minutes.</p>
+  <div class="cta"><a class="btn p launch" href="#">Launch the demo store</a><a class="btn g" href="#how">See how it works</a></div>
+ </div>
+ <div class="float" aria-hidden="true">
+  <div class="tile" style="left:8%;top:6%;background:#25384a;animation-delay:0s">🥛</div>
+  <div class="tile" style="left:52%;top:0;background:#2b3448;animation-delay:-1s">🍫</div>
+  <div class="tile" style="left:28%;top:34%;background:#3b3524;animation-delay:-2s">🧃</div>
+  <div class="tile" style="left:68%;top:38%;background:#2a3a35;animation-delay:-3s">🍎</div>
+  <div class="tile" style="left:4%;top:68%;background:#322b4a;animation-delay:-4s">🧴</div>
+  <div class="tile" style="left:46%;top:70%;background:#3a2a2a;animation-delay:-5s">🍪</div>
+ </div>
+</div></header>
+
+<div class="strip"><div class="wrap">
+ <div><b>30 min</b><span>doorstep handover</span></div>
+ <div><b>5</b><span>store departments</span></div>
+ <div><b>3D</b><span>true-to-scale preview</span></div>
+ <div><b>0</b><span>queues, zero travel</span></div>
+</div></div>
+
+<section id="how"><div class="wrap">
+ <div class="head"><h2>From headset to doorstep in four steps</h2><p>Shopping the way it should feel: you see everything before you buy, and you wait almost nothing after.</p></div>
+ <div class="grid g4">
+  <div class="card step"><div class="ic">🥽</div><h3><span class="n">1 · </span>Enter the mall</h3><p>Put on a headset or open the app and walk through a lifelike 3D shopping complex.</p></div>
+  <div class="card step"><div class="ic">🛒</div><h3><span class="n">2 · </span>Pick in 3D</h3><p>Pick up and rotate any product just as you would on a real shelf.</p></div>
+  <div class="card step"><div class="ic">🏷️</div><h3><span class="n">3 · </span>Read the label</h3><p>See manufacturing date, expiry, manufacturer and batch number instantly.</p></div>
+  <div class="card step"><div class="ic">🛵</div><h3><span class="n">4 · </span>Get it in 30 min</h3><p>Choose your delivery area and the nearest hub hands it over within half an hour.</p></div>
+ </div>
+</div></section>
+
+<section id="items" style="background:var(--s1);border-block:1px solid var(--line)"><div class="wrap">
+ <div class="head"><h2>Browse the shelves</h2><p>A taste of what sits inside the virtual store. Pick a department to see its products.</p></div>
+ <div class="tabs" id="tabs" role="tablist"></div>
+ <div class="grid g3" id="prods"></div>
+</div></section>
+
+<section id="why"><div class="wrap">
+ <div class="head"><h2>Why ShopVerse VR stands out</h2></div>
+ <div class="grid g3">
+  <div class="card"><div class="ic">👁️</div><h3>Try before you buy</h3><p>A true-to-scale 3D preview of every product before you pay.</p></div>
+  <div class="card"><div class="ic">🔍</div><h3>Full label transparency</h3><p>Expiry, ingredients and manufacturing data are always one glance away.</p></div>
+  <div class="card"><div class="ic">🤖</div><h3>AI shopping assistant</h3><p>Personal suggestions based on your taste and past orders.</p></div>
+  <div class="card"><div class="ic">⚡</div><h3>Hyperlocal speed</h3><p>Micro-fulfilment hubs sit close to every delivery zone.</p></div>
+  <div class="card"><div class="ic">🏠</div><h3>Zero travel, zero queue</h3><p>Shop from your sofa, ideal for elderly and differently-abled users.</p></div>
+  <div class="card"><div class="ic">🌱</div><h3>Smart, eco packaging</h3><p>Optimised packing keeps waste low on every delivery.</p></div>
+ </div>
+</div></section>
+
+<section id="impact" style="background:var(--s1);border-block:1px solid var(--line)"><div class="wrap">
+ <div class="head"><h2>Impact beyond the cart</h2><p>Better shopping should also be fairer, faster and kinder to the city.</p></div>
+ <div class="grid g2">
+  <div class="card"><h3>Inclusive access</h3><p>Elderly and differently-abled shoppers get the full retail experience from home.</p></div>
+  <div class="card"><h3>Time given back</h3><p>Working professionals reclaim hours lost to commuting and billing lines.</p></div>
+  <div class="card"><h3>Local jobs</h3><p>Warehousing, technical support and delivery roles grow around every hub.</p></div>
+  <div class="card"><h3>Lower emissions</h3><p>Fewer individual store trips mean less traffic and a smaller carbon footprint.</p></div>
+ </div>
+</div></section>
+
+<section id="host"><div class="wrap">
+ <div class="host-box">
+  <div class="av">🧑‍💻</div>
+  <div><h2>Hosted by Saksham Raghav</h2><p>B.Tech Computer Science student at KIET Deemed to be University. ShopVerse VR began as a Future Innovator idea for the Induction Program and grew into a walkable 3D store you can try right now.</p></div>
+ </div>
+</div></section>
+
+<section class="final"><div class="wrap">
+ <h2>Ready to walk into the store?</h2>
+ <p>Open the demo, wander the departments, inspect a product and place a test order.</p>
+ <a class="btn p launch" href="#">Launch the demo store</a>
+</div></section>
+
+<footer><div class="wrap">© 2026 ShopVerse VR · Hosted by Saksham Raghav</div></footer>
+
+<div id="ov" role="dialog" aria-live="polite" aria-label="Opening project">
+ <div class="ring"></div>
+ <h2>Thank you for using our project</h2>
+ <p>Opening your virtual store…</p>
+ <div class="pb" id="pb"><i></i></div>
+ <a id="manual" href="#" target="_blank" rel="noopener">Tap here if it does not open</a>
+</div>
+
+<script>
+const PROJECT_URL=new URL("store.html",location.href).href; // opens store.html from the same folder
+const D=[
+ ['Dairy & Bakery',[['🥛','Toned Milk 1L',68,'4 days','Green Valley Dairy'],['🧀','Cheese Slices',120,'6 months','Alpine Foods'],['🍞','Multigrain Bread',55,'4 days','Daily Bakes']]],
+ ['Snacks',[['🍪','Oat Cookies',40,'5 months','Crunchwell'],['🍫','Dark Chocolate',150,'10 months','Cocoa Craft'],['🥜','Roasted Peanuts',90,'6 months','NutHouse']]],
+ ['Beverages',[['🧃','Mango Juice',35,'5 months','Fruitopia'],['☕','Cold Coffee',60,'3 months','Brew & Co'],['🥤','Lemon Soda',25,'11 months','FizzUp']]],
+ ['Personal Care',[['🧴','Herbal Shampoo',210,'21 months','PureLeaf'],['🪥','Bamboo Toothbrush',60,'2 years','EcoSmile'],['🧼','Neem Soap',45,'22 months','NeemNest']]],
+ ['Fresh Produce',[['🍎','Apples 1kg',180,'10 days','Hill Orchards'],['🍌','Bananas 1 dozen',60,'5 days','Sunfarm'],['🥕','Carrots 500g',50,'8 days','Green Roots']]]
+];
+const tabs=document.getElementById('tabs'),prods=document.getElementById('prods');
+function show(k){
+ [...tabs.children].forEach((b,i)=>{b.classList.toggle('on',i===k);b.setAttribute('aria-selected',i===k)});
+ prods.innerHTML=D[k][1].map(p=>`<div class="card prod"><span class="em">${p[0]}</span><h3>${p[1]}</h3><div class="price">₹${p[2]}</div><div class="chips"><span class="chip">Shelf life ${p[3]}</span><span class="chip">${p[4]}</span></div></div>`).join('');
+}
+D.forEach((d,i)=>{const b=document.createElement('button');b.className='tab';b.role='tab';b.textContent=d[0];b.onclick=()=>show(i);tabs.appendChild(b)});
+show(0);
+
+/* rabbit (top view) runs behind the cursor */
+const rb=document.getElementById('rb');
+let mx=innerWidth*.6,my=innerHeight*.5,x=mx-260,y=my,ang=0,t=0,was=false;
+function mv(e){const p=e.touches?e.touches[0]:e;mx=p.clientX;my=p.clientY}
+addEventListener('mousemove',mv);addEventListener('touchmove',mv,{passive:true});addEventListener('touchstart',mv,{passive:true});
+(function loop(){
+ const dx=mx-x,dy=my-y,d=Math.hypot(dx,dy),stop=44;
+ let v=0;
+ if(d>stop){v=Math.min(6,(d-stop)*.04+.5);x+=dx/d*v;y+=dy/d*v}
+ const run=v>.9;
+ if(run!==was){rb.classList.toggle('run',run);was=run}
+ if(run)rb.style.setProperty('--d',Math.max(.14,.34-v*.03)+'s');
+ if(d>8){const diff=((Math.atan2(dy,dx)-ang+Math.PI*3)%(Math.PI*2))-Math.PI;ang+=diff*.14}
+ t+=.32;
+ const sc=run?1+Math.sin(t)*.04:1;
+ rb.style.transform=`translate(${x-27}px,${y-17}px) rotate(${ang}rad) scale(${sc})`;
+ requestAnimationFrame(loop)})();
+
+/* launch: 3 second thank-you screen, then open the project */
+const ov=document.getElementById('ov'),pb=document.getElementById('pb'),man=document.getElementById('manual');
+let busy=false;
+document.querySelectorAll('.launch').forEach(a=>a.addEventListener('click',e=>{
+ e.preventDefault();if(busy)return;busy=true;
+ let w=null;try{w=window.open('','_blank')}catch(_){}
+ ov.classList.add('on');pb.classList.remove('go');void pb.offsetWidth;pb.classList.add('go');
+ setTimeout(()=>{
+  if(w&&!w.closed){w.location.href=PROJECT_URL;ov.classList.remove('on');busy=false}
+  else{man.href=PROJECT_URL;man.style.display='block';try{window.top.location.href=PROJECT_URL}catch(_){}
+   setTimeout(()=>{ov.classList.remove('on');man.style.display='none';busy=false},4000)}
+ },3000);
+}));
+</script>
+</body>
+</html>
